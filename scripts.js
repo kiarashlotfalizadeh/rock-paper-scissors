@@ -17,65 +17,95 @@ function getComputerChoice () {
   return computerChoice;
 }
 
-function getHumanChoice () {
-  let humanChoice = prompt("Rock, Paper, Scissors?");
-  return humanChoice.toLowerCase();
+let humanScore = 0;
+let computerScore = 0;
+
+function playRound(humanChoice, computerChoice) {
+  if (humanChoice === computerChoice) {
+    outcomeText.textContent = "You tied!";
+  } 
+
+  switch (humanChoice) {
+    case "rock":
+      switch (computerChoice) {
+        case "paper":
+          outcomeText.textContent = "You lose! Paper beats Rock";
+          computerScore++;
+          break;
+        case "scissors":
+          outcomeText.textContent = "You win! Rock beats Scissors";
+          humanScore++;
+          break;
+      }
+    break;
+    case "paper":
+      switch (computerChoice) {
+        case "rock":
+          outcomeText.textContent = "You win! Paper beats Rock";
+          humanScore++;
+          break;
+        case "scissors":
+          outcomeText.textContent = "You lose! Scissors beats Paper";
+          computerScore++;
+          break;
+      }
+    break;
+    case "scissors":
+      switch (computerChoice) {
+        case "rock":
+          outcomeText.textContent = "You lose! Rock beats Scissors";
+          computerScore++;
+          break;
+        case "paper":
+          outcomeText.textContent = "You win! Scissors beats Paper";
+          humanScore++;
+          break;
+      }
+    break;
+  }
 }
 
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
+function isGameOver (humanScore, computerScore) {
+  if (humanScore === 5 || computerScore === 5) {
+    return true;
+  };
+  return false;
+};
 
-  function playRound(humanChoice, computerChoice) {
-    if (humanChoice === computerChoice) {
-      console.log("You tied!");
-    } 
+const rockButton = document.querySelector("#rockButton");
+const paperButton = document.querySelector("#paperButton");
+const scissorsButton = document.querySelector("#scissorsButton");
+const outcomeText = document.querySelector("#outcome");
+const currentScore = document.querySelector("#currentScore");
 
-    switch (humanChoice) {
-      case "rock":
-        switch (computerChoice) {
-          case "paper":
-            console.log("You lose! Paper beats Rock");
-            computerScore++;
-            break;
-          case "scissors":
-            console.log("You win! Rock beats Scissors");
-            humanScore++;
-            break;
-        }
-      break;
-      case "paper":
-        switch (computerChoice) {
-          case "rock":
-            console.log("You win! Paper beats Rock");
-            humanScore++;
-            break;
-          case "scissors":
-            console.log("You lose! Scissors beats Paper");
-            computerScore++;
-            break;
-        }
-      break;
-      case "scissors":
-        switch (computerChoice) {
-          case "rock":
-            console.log("You lose! Rock beats Scissors");
-            computerScore++;
-            break;
-          case "paper":
-            console.log("You win! Scissors beats Paper");
-            humanScore++;
-            break;
-        }
-      break;
-    }
+rockButton.addEventListener("click", function() {
+  playRound("rock", getComputerChoice());
+  currentScore.textContent = `Current Score: You: ${humanScore}   Computer: ${computerScore}`;
+  
+  if (isGameOver(humanScore, computerScore)) {
+    humanScore = 0;
+    computerScore = 0;
   }
+});
 
-  for (let i = 0; i < 5; i++) {
-    playRound(getHumanChoice(), getComputerChoice());
+paperButton.addEventListener("click", function() {
+  playRound("paper", getComputerChoice());
+  currentScore.textContent = `Current Score: You: ${humanScore}   Computer: ${computerScore}`;
+
+  if (isGameOver(humanScore, computerScore)) {
+    humanScore = 0;
+    computerScore = 0;
   }
+});
 
-  console.log(`Final Score: You: ${humanScore}   Computer: ${computerScore}`);
-}
+scissorsButton.addEventListener("click", function() {
+  playRound("scissors", getComputerChoice());
+  currentScore.textContent = `Current Score: You: ${humanScore}   Computer: ${computerScore}`;
 
-playGame();
+  if (isGameOver(humanScore, computerScore)) {
+    humanScore = 0;
+    computerScore = 0;
+  }
+});
+
+
